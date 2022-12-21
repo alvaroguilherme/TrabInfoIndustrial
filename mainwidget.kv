@@ -25,8 +25,10 @@
                 orientation: 'horizontal'
                 Button: 
                     text: 'MODBUS'
+                    on_release: root._modbusPopup.open()
                 Button:
                     text: 'Scan Time'
+                    on_release: root._scanPopup.open()
         Image: 
             id: img_con
             size_hint_x: None
@@ -43,6 +45,32 @@
         Image:
             source: 'imgs/Refinaria.png'
         
+        Label:
+            id: lb_temp
+            size_hint: (None,None)
+            size: (termometro.size[0]*0.25,termometro.size[1])
+            pos_hint: {'x':-0.06,'y':0.3}
+            canvas:
+                Color: 
+                    rgb:1,0,0
+                Rectangle: 
+                    size: self.size
+                    pos: (self.pos[0]+self.width*1.5,self.pos[1])
+        Image:
+            id: termometro
+            source: 'imgs/termometro.png'
+            size_hint: 0.17,0.17
+            pos_hint: lb_temp.pos_hint
+
+        Button:
+            size_hint: (None,None)
+            size: (0.65*62,0.65*58)
+            background_normal: 'imgs/graph_icon.jpg'
+            background_down: 'imgs/graph_icon.jpg'
+            pos_hint: {'x':0.002,'y':0.22}
+            on_release:
+                root._graphPopup.open()
+
         Label:
             id: fornalha
             text: '-.- ºC'
