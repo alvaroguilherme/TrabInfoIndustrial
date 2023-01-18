@@ -28,13 +28,13 @@ class BDHandler():
         Método para criar tabela para armazenar no BD
         """
         try:
-            sqr_str = f"""
+            sql_str = f"""
                         CREATE TABLE IF NOT EXISTS {self._tablename} (
                             id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                             timestamp TEXT NOT NULL, 
                         """
             for n in self._col_names:
-                sqt_str += f'{n} REAL,'
+                sql_str += f'{n} REAL,'
             
             sql_str = sql_str[:-1]
             sql_str += ');'
@@ -58,27 +58,27 @@ class BDHandler():
             sql_str = f'INSERT INTO {self._tablename} ({str_cols}) VALUES ({str_values});'
             self._cursor.execute(sql_str)
             self._con.commit()
-            self._lock.release()
-
         except Exception as e:
             print('Erro: ',e.args)
+        finally:
+            self._lock.release()
     
     def selectData(self,cols,init_t,final_t):
         """
         Método para consulta dos dados no BD
         """
-        try:
-            self._lock.acquire()
-            sql_str = f"SELECT {','.join(cols)} FROM {self._tablename} WHERE timestamp BETWEEN '{init_t}' AND '{final_t}'"
-            self._cursor.execute(sql_str)
+        # try:
+        self._lock.acquire()
+        sql_str = f"SELECT {','.join(cols)} FROM {self._tablename} WHERE timestamp BETWEEN '{init_t}' AND '{final_t}'"
+        self._cursor.execute(sql_str)
 
-            dados = dict((sensor,[]) for sensor in cols)
-            for linha in self._cursor.fetchall():
-                for d in len(linha):
-                    dados[cols[d]].append(linha[d])
-                    
-            self._lock.release()
-            return dados
+        dados = dict((sensor,[]) for sensor in cols)
+        for linha in self._cursor.fetchall():
+            for d in range(len(linha)):
+                dados[cols[d]].append(linha[d])
+                
+        self._lock.release()
+        return dados
 
-        except Exception as e:
-            print('Erro: ',e.args)
+        # except Exception as e:
+        #     print('Erro: ',e.args)

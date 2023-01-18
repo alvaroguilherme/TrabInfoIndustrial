@@ -18,7 +18,8 @@ class MainApp(App):
             'oleo_lub':1006,
             'oleo_comb':1007,
             'residuos':1008
-        }
+        },
+        db_path = 'db\\scada.db'
         )
         return self._widget
     

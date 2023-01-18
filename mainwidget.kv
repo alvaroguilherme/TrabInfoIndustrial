@@ -102,7 +102,13 @@
             pos_hint: {'x':0.175,'y':-0.17}
         TempLabel:
             id: residuos
-            pos_hint: {'x':0.175,'y':-0.245}    
+            pos_hint: {'x':0.175,'y':-0.245}   
+        Button:
+            text: 'Dados históricos'
+            pos_hint: {'right':1,'down':1}
+            size_hint: (0.2,0.05) 
+            on_release:
+                root._histPopup.open()
 
 
 <TempLabel@Label>:
